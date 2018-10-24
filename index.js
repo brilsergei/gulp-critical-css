@@ -12,6 +12,7 @@ const postcss = require('postcss');
  */
 const cleanCritical = require('./plugins/cleanCritical.js');
 const extractCritical = require('./plugins/extractCritical.js');
+const removeCritical = require('./plugins/removeCritical.js');
 
 /**
  * Set defaults
@@ -65,8 +66,8 @@ module.exports = function (opts) {
 			var filePath = path.parse(file.path);
 
 			// Let postcss generate our critical and cleaned stylesheets
-			var cleanedCSS = postcss([cleanCritical(opts)]).process(file.contents.toString()).css;
 			var criticalCSS = postcss([extractCritical(opts), cleanCritical(opts)]).process(file.contents.toString()).css;
+                        var cleanedCSS = postcss([removeCritical(opts)]).process(file.contents.toString()).css;
 
 			// Create the new files
 			var cleanedFile = file.clone();
